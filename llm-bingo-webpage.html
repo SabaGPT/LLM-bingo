@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM宾果</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .title {
+            font-size: 28px;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 8px;
+            background-color: #e6f4ff;
+            color: #1a1a1a;
+            padding: 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .cell:hover {
+            background-color: #bae0ff;
+        }
+
+        .cell.selected {
+            background-color: #1677ff;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .cell {
+                font-size: 12px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/javascript">
+        const App = () => {
+            const [selected, setSelected] = React.useState(new Set());
+
+            const items = [
+                ["用过ChatGPT", "写过提示词", "尝试过Agent", "用AI画过图", "会用Code Interpreter"],
+                ["部署私有模型", "用过Claude", "接入过API", "读过GPT论文", "用AI做过PPT"],
+                ["用AI写过代码", "解过数学证明题", "用过ComfyUI", "让AI写过文案", "用GPT翻译"],
+                ["微调过模型", "训练自己的AI", "制作AI视频", "用过O1", "用AI数据分析"],
+                ["用过Midjourney", "接入过向量库", "用AI学过知识", "尝试过思维链", "用过语音助手"]
+            ];
+
+            const toggleCell = (rowIndex, colIndex) => {
+                const key = `${rowIndex}-${colIndex}`;
+                const newSelected = new Set(selected);
+                if (selected.has(key)) {
+                    newSelected.delete(key);
+                } else {
+                    newSelected.add(key);
+                }
+                setSelected(newSelected);
+            };
+
+            return React.createElement(
+                'div',
+                { className: 'container' },
+                React.createElement(
+                    'div',
+                    { className: 'header' },
+                    React.createElement('h1', { className: 'title' }, 'LLM宾果'),
+                    React.createElement('p', { className: 'subtitle' }, '五点连一线,你就是LLM高手')
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'grid' },
+                    items.map((row, rowIndex) =>
+                        row.map((text, colIndex) =>
+                            React.createElement(
+                                'button',
+                                {
+                                    key: `${rowIndex}-${colIndex}`,
+                                    className: `cell ${selected.has(`${rowIndex}-${colIndex}`) ? 'selected' : ''}`,
+                                    onClick: () => toggleCell(rowIndex, colIndex)
+                                },
+                                text
+                            )
+                        )
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'footer' },
+                    'made by Akira♥'
+                )
+            );
+        };
+
+        ReactDOM.render(React.createElement(App), document.getElementById('root'));
+    </script>
+</body>
+</html>
